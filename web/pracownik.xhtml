@@ -69,9 +69,9 @@
 
                         <h:outputText value="Ilość dostępnych: " />   
 
-                        <p:inputMask id="ilosc" value="#{dodajKsiazke.dostepnosc}" mask="99"  validatorMessage="PESEL musi zawierać 11 znaków" required="true" requiredMessage="Wymagany PESEL">
-                            <f:validateLength minimum="1" maximum="99"/>                            
-                        </p:inputMask>
+                        <p:inputText id="ilosc" value="#{dodajKsiazke.dostepnosc}" required="true" requiredMessage="Wymagane podanie ilości" validatorMessage="Wykryto błędne znaki w polu Ilość dostępnych">
+                           <f:validateRegex pattern="[0-9]" />                          
+                        </p:inputText>
 
 
 
