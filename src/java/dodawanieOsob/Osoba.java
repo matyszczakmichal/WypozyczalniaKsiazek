@@ -4,16 +4,16 @@
  * and open the template in the editor.
  */
 package dodawanieOsob;
-import java.io.Serializable;
 
+import java.io.Serializable;
 
 // klasa Osoba wykorzystywana do rejestracji
 public class Osoba implements Serializable {
-    
-    private String imie;    
+
+    private String imie;
     private String nazwisko;
     private String pesel;
-    
+
     private String login;
     private String haslo;
     private String powthaslo;
@@ -27,8 +27,7 @@ public class Osoba implements Serializable {
         this.powthaslo = powthaslo;
     }
 
-
- public String getImie() {
+    public String getImie() {
         return imie;
     }
 
@@ -75,6 +74,5 @@ public class Osoba implements Serializable {
     public void setRodzaj(String rodzaj) {
         this.rodzaj = rodzaj;
     }
-    
-    
+
 }

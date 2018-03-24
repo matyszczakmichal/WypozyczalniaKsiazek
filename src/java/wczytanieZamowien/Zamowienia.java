@@ -18,7 +18,7 @@ import org.primefaces.context.RequestContext;
  * @author Michal
  */
 public class Zamowienia {
-    
+
     String idzamowienia;
     String data;
     String zrealizowano;
@@ -30,13 +30,12 @@ public class Zamowienia {
     String imie;
     String nazwisko;
     String pesel;
-    
-    
-    public Zamowienia(){
-    
-}
-    public Zamowienia(String idzamowienia, String data, String zrealizowano, String idosoba, String idksiazka, String tytul, String pisarz, String cena, String imie, String nazwisko, String pesel)
-    {
+
+    public Zamowienia() {
+
+    }
+
+    public Zamowienia(String idzamowienia, String data, String zrealizowano, String idosoba, String idksiazka, String tytul, String pisarz, String cena, String imie, String nazwisko, String pesel) {
         this.idzamowienia = idzamowienia;
         this.data = data;
         this.zrealizowano = zrealizowano;
@@ -74,7 +73,6 @@ public class Zamowienia {
         this.pesel = pesel;
     }
 
-    
     public String getTytul() {
         return tytul;
     }
@@ -99,7 +97,6 @@ public class Zamowienia {
         this.cena = cena;
     }
 
-    
     public String getIdzamowienia() {
         return idzamowienia;
     }
@@ -139,14 +136,12 @@ public class Zamowienia {
     public void setIdksiazka(String idksiazka) {
         this.idksiazka = idksiazka;
     }
-    
-    
+
     // metoda realizujaca wypozyczenie ( zmienia pole zrealizowano z nie na tak w tabeli wypozyczenia)
-    public void zrealizuj () throws SQLException
-    {
-        RequestContext context = RequestContext.getCurrentInstance();                
+    public void zrealizuj() throws SQLException {
+        RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg = null;
-        
+
         try {
             //Połączenie z bazą danych            
             try {
@@ -157,28 +152,25 @@ public class Zamowienia {
 
             //Wykonanie wyrażenia SQL i dodanie rekordów
             Statement stmt = con.createStatement();
-            String SQL = "UPDATE wypozyczenia SET zrealizowano ='" + "TAK" + "' WHERE id_wypozyczenie = '"+ idzamowienia+"'";
-            boolean rs = stmt.execute(SQL); 
-            
-            if(!rs)
-            {
-                           
-                            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Zrealizowano zamówienie ","Sukces");
-                            FacesContext.getCurrentInstance().addMessage(null, msg);
-                        }
-                        else
-                        {
-                            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Błąd podczas dodawania książki", "Błąd");
-                            FacesContext.getCurrentInstance().addMessage(null, msg);
-                        }
-                                        
-                } catch (SQLException err) {
-                    
-                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błąd podczas łączenia z serwerem", "Błąd");
-                        FacesContext.getCurrentInstance().addMessage(null, msg);
-                    System.out.println(err.getMessage());
-                }
-    context.addCallbackParam("edytuj", true);
-}
-    
+            String SQL = "UPDATE wypozyczenia SET zrealizowano ='" + "TAK" + "' WHERE id_wypozyczenie = '" + idzamowienia + "'";
+            boolean rs = stmt.execute(SQL);
+
+            if (!rs) {
+
+                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Zrealizowano zamówienie ", "Sukces");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            } else {
+                msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Błąd podczas dodawania książki", "Błąd");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+
+        } catch (SQLException err) {
+
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błąd podczas łączenia z serwerem", "Błąd");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            System.out.println(err.getMessage());
+        }
+        context.addCallbackParam("edytuj", true);
+    }
+
 }

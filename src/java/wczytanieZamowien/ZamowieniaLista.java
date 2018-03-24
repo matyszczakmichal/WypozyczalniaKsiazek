@@ -25,78 +25,69 @@ public class ZamowieniaLista {
                 Class.forName("com.mysql.jdbc.Driver");
             } catch (ClassNotFoundException err) {
             }
-                Connection con = java.sql.DriverManager.getConnection(DatabaseConfiguration.URL, DatabaseConfiguration.USER, DatabaseConfiguration.PASSWORD);
-            
-                FacesContext ctx = FacesContext.getCurrentInstance();
-            HttpSession session = (HttpSession) ctx.getExternalContext().getSession(true);        
-              String idosobaSesja = (String)session.getAttribute("osobaID");
-              int rodzaj = (Integer)session.getAttribute("rodzaj");
-        
-              // jesli rodzaj uzytkownika 2 to dodaj do listy tylko dane z idosoby w sesji
-              if(rodzaj ==2)
-              {
-            Statement stmt = con.createStatement();
-            String SQL = "SELECT * FROM wypozyczenia JOIN osoba ON wypozyczenia.id_osoba = osoba.id_osoba JOIN ksiazki ON ksiazki.id_ksiazka = wypozyczenia.id_ksiazka WHERE osoba.id_osoba = '" + idosobaSesja +"'";
-            ResultSet rs = stmt.executeQuery(SQL);
+            Connection con = java.sql.DriverManager.getConnection(DatabaseConfiguration.URL, DatabaseConfiguration.USER, DatabaseConfiguration.PASSWORD);
 
-               while(rs.next())
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) ctx.getExternalContext().getSession(true);
+            String idosobaSesja = (String) session.getAttribute("osobaID");
+            int rodzaj = (Integer) session.getAttribute("rodzaj");
+
+            // jesli rodzaj uzytkownika 2 to dodaj do listy tylko dane z idosoby w sesji
+            if (rodzaj == 2) {
+                Statement stmt = con.createStatement();
+                String SQL = "SELECT * FROM wypozyczenia JOIN osoba ON wypozyczenia.id_osoba = osoba.id_osoba JOIN ksiazki ON ksiazki.id_ksiazka = wypozyczenia.id_ksiazka WHERE osoba.id_osoba = '" + idosobaSesja + "'";
+                ResultSet rs = stmt.executeQuery(SQL);
+
+                while (rs.next()) {
+                    String idzamowienia = rs.getString("wypozyczenia.id_wypozyczenie");
+                    String idksiazka = rs.getString("wypozyczenia.id_ksiazka");
+                    String data = rs.getString("datawypozyczenia");
+                    String zrealizowano = rs.getString("zrealizowano");
+                    String idosoba = rs.getString("wypozyczenia.id_osoba");
+                    String tytul = rs.getString("tytul");
+                    String pisarz = rs.getString("pisarz");
+                    String cena = rs.getString("cena");
+                    String imie = rs.getString("imie");
+                    String nazwisko = rs.getString("nazwisko");
+                    String pesel = rs.getString("pesel");
+
+                    zamowienia.add(new Zamowienia(idzamowienia, data, zrealizowano, idosoba, idksiazka, tytul, pisarz, cena, imie, nazwisko, pesel));
+
+                }
+            } else // w przeciwnym wypadku wszystkie zamówienia
             {
-                String idzamowienia = rs.getString("wypozyczenia.id_wypozyczenie");
-                String idksiazka = rs.getString("wypozyczenia.id_ksiazka");
-                String data = rs.getString("datawypozyczenia");
-                String zrealizowano = rs.getString("zrealizowano");
-                String idosoba = rs.getString("wypozyczenia.id_osoba");                
-                String tytul = rs.getString("tytul");
-                String pisarz = rs.getString("pisarz");
-                String cena = rs.getString("cena");
-                String imie = rs.getString("imie");
-                String nazwisko = rs.getString("nazwisko");
-                String pesel = rs.getString("pesel");
-                
-                
-                zamowienia.add(new Zamowienia(idzamowienia, data, zrealizowano, idosoba, idksiazka, tytul, pisarz, cena, imie, nazwisko, pesel));
-              
-            
+                try {
+                    Statement stmt = con.createStatement();
+                    String SQL = "SELECT * FROM wypozyczenia JOIN osoba ON wypozyczenia.id_osoba = osoba.id_osoba JOIN ksiazki ON ksiazki.id_ksiazka = wypozyczenia.id_ksiazka";
+                    ResultSet rs = stmt.executeQuery(SQL);
+
+                    while (rs.next()) {
+                        String idzamowienia = rs.getString("wypozyczenia.id_wypozyczenie");
+                        String idksiazka = rs.getString("wypozyczenia.id_ksiazka");
+                        String data = rs.getString("datawypozyczenia");
+                        String zrealizowano = rs.getString("zrealizowano");
+                        String idosoba = rs.getString("wypozyczenia.id_osoba");
+                        String tytul = rs.getString("tytul");
+                        String pisarz = rs.getString("pisarz");
+                        String cena = rs.getString("cena");
+                        String imie = rs.getString("imie");
+                        String nazwisko = rs.getString("nazwisko");
+                        String pesel = rs.getString("pesel");
+
+                        zamowienia.add(new Zamowienia(idzamowienia, data, zrealizowano, idosoba, idksiazka, tytul, pisarz, cena, imie, nazwisko, pesel));
+
+                    }
+
+                } catch (SQLException err) {
+                    System.out.println(err.getMessage());
+                }
             }
-              }
-              else
-                  // w przeciwnym wypadku wszystkie zamówienia
-              try{
-                  Statement stmt = con.createStatement();
-            String SQL = "SELECT * FROM wypozyczenia JOIN osoba ON wypozyczenia.id_osoba = osoba.id_osoba JOIN ksiazki ON ksiazki.id_ksiazka = wypozyczenia.id_ksiazka";
-            ResultSet rs = stmt.executeQuery(SQL);
 
-               while(rs.next())
-            {
-                String idzamowienia = rs.getString("wypozyczenia.id_wypozyczenie");
-                String idksiazka = rs.getString("wypozyczenia.id_ksiazka");
-                String data = rs.getString("datawypozyczenia");
-                String zrealizowano = rs.getString("zrealizowano");
-                String idosoba = rs.getString("wypozyczenia.id_osoba");                
-                String tytul = rs.getString("tytul");
-                String pisarz = rs.getString("pisarz");
-                String cena = rs.getString("cena");
-                String imie = rs.getString("imie");
-                String nazwisko = rs.getString("nazwisko");
-                String pesel = rs.getString("pesel");
-                
-                
-                zamowienia.add(new Zamowienia(idzamowienia, data, zrealizowano, idosoba, idksiazka, tytul, pisarz, cena, imie, nazwisko, pesel));
-              
-              }
+            return zamowienia;
 
         } catch (SQLException err) {
-            System.out.println(err.getMessage());
+
         }
-
         return zamowienia;
-
     }
-        catch(SQLException err)
-                {
-                    
-                }
-        return zamowienia;
 }
-}
-

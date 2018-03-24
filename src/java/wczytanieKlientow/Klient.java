@@ -18,7 +18,7 @@ import org.primefaces.context.RequestContext;
  * @author Michal
  */
 public class Klient {
-   
+
     String idosoba;
     String imie;
     String nazwisko;
@@ -26,15 +26,12 @@ public class Klient {
     String login;
     String haslo;
     String rodzaj;
-    
-    
-    public Klient()
-    {
-        
+
+    public Klient() {
+
     }
-    
-    public Klient(String idosoba, String imie, String nazwisko, String pesel, String login, String haslo, String rodzaj)
-    {
+
+    public Klient(String idosoba, String imie, String nazwisko, String pesel, String login, String haslo, String rodzaj) {
         this.idosoba = idosoba;
         this.imie = imie;
         this.nazwisko = nazwisko;
@@ -51,8 +48,6 @@ public class Klient {
     public void setIdosoba(String idosoba) {
         this.idosoba = idosoba;
     }
-    
-    
 
     public String getImie() {
         return imie;
@@ -101,11 +96,9 @@ public class Klient {
     public void setRodzaj(String rodzaj) {
         this.rodzaj = rodzaj;
     }
-    
-    
+
     // edycja klientów 
-    public void edytuj()
-    {
+    public void edytuj() {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msga = null;
         try {
@@ -120,29 +113,24 @@ public class Klient {
             String SQL = "UPDATE osoba SET imie ='" + imie + "', nazwisko = '" + nazwisko + "', pesel = '" + pesel + "' WHERE id_osoba = '" + idosoba + "';";
 
             boolean rs = stmt.execute(SQL);
-            
-            if (!rs)
-                        {   
-                             
-                            msga = new FacesMessage(FacesMessage.SEVERITY_INFO, "Zaktualizowano dane pracownika ","");
-                            FacesContext.getCurrentInstance().addMessage(null, msga);
-                        }
-                        else
-                        {
-                            msga = new FacesMessage(FacesMessage.SEVERITY_WARN, "Nie można zaktualizować danych pracownika", "");
-                            FacesContext.getCurrentInstance().addMessage(null, msga);
-                        }
-                                     
-                   
-                                   
+
+            if (!rs) {
+
+                msga = new FacesMessage(FacesMessage.SEVERITY_INFO, "Zaktualizowano dane pracownika ", "");
+                FacesContext.getCurrentInstance().addMessage(null, msga);
+            } else {
+                msga = new FacesMessage(FacesMessage.SEVERITY_WARN, "Nie można zaktualizować danych pracownika", "");
+                FacesContext.getCurrentInstance().addMessage(null, msga);
+            }
+
         } catch (SQLException err) {
             msga = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błąd podczas łączenia z serwerem", "Błąd");
-                        FacesContext.getCurrentInstance().addMessage(null, msga);
+            FacesContext.getCurrentInstance().addMessage(null, msga);
             System.out.println(err.getMessage());
         }
-        
+
         context.addCallbackParam("edytuj", true);
 
-            } 
-    
+    }
+
 }

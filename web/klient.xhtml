@@ -15,33 +15,33 @@ and open the template in the editor.
     </h:head>
 
     <h:body>
-        
+
         <h:body  style="background-color: #99ccff " /> 
         <f:metadata>
             <f:viewAction action="#{logowanie.sprawdzLogowanieKlient()}" />
         </f:metadata>
-        
+
         <h:form>
-        <h:panelGrid columns="1">
-            <p:commandButton value="Wyloguj" action="#{logowanie.wyloguj()}" icon="ui-icon-extlink" />
-        </h:panelGrid>
-        </h:form>
-        
-        <center>
-        <h:form>
-            <h:panelGrid columns="3">
-            
-                <center><h2>Panel Klienta wypożyczalni książek</h2></center>
-                <center><h3>Witaj użytkowniku #{logowanie.username}</h3></center>
-           
-            
+            <h:panelGrid columns="1">
+                <p:commandButton value="Wyloguj" action="#{logowanie.wyloguj()}" icon="ui-icon-extlink" />
             </h:panelGrid>
         </h:form>
+
+        <center>
+            <h:form>
+                <h:panelGrid columns="3">
+
+                    <center><h2>Panel Klienta wypożyczalni książek</h2></center>
+                    <center><h3>Witaj użytkowniku #{logowanie.username}</h3></center>
+
+
+                </h:panelGrid>
+            </h:form>
         </center>
-        
+
         <p:separator />
 
-        
+
 
         <p:fieldset legend="ZBIÓR KSIĄŻEK" toggleable="true" toggleSpeed="500" collapsed = "true" style="background-color: #cee6ff">                 
 
@@ -49,18 +49,18 @@ and open the template in the editor.
             <h:form>
 
                 <p:dataGrid var="ksiazkatab" value="#{listaksiazki.ksiazka}" columns="3" rows="12" paginator="true" id="cars" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="6,12,16" style="background-color: #cee6ff">
-                    
-                    
+
+
                     <p:panel header="#{ksiazkatab.tytul}" style="text-align:center" >
                         <h:panelGrid columns="1" style="width:100%">
 
-                            
+
                             <p:commandLink update="@([id$=szczegoly])" oncomplete="PF('szczegolyDialog').show()" title="Pokaż opis">
                                 <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
                                 <f:setPropertyActionListener value="#{ksiazkatab}" target="#{listaksiazki.wybrany}" />
                             </p:commandLink>
-                            
-                           
+
+
                         </h:panelGrid>
                     </p:panel>
 
@@ -88,11 +88,11 @@ and open the template in the editor.
                             <h:outputText value="Stan w magazynie:" />
                             <h:outputText value="#{listaksiazki.wybrany.stanwmagazynie}" />
 
-                           
+
                         </p:panelGrid>
                     </p:outputPanel>
                 </p:dialog>
-                                
+
             </h:form>
 
         </p:fieldset>
@@ -135,25 +135,25 @@ and open the template in the editor.
                 <p:dialog header="Okno wypożyczeń" widgetVar="edytorDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" style="background-color: #cee6ff">
                     <p:outputPanel id="edytor" style="text-align:center;">
                         <p:panelGrid  columns="1" rendered="#{not empty listaksiazki.wybrany}" columnClasses="label,value" >
-                           
-                             <h:outputText value="Tytuł: #{listaksiazki.wybrany.tytul}"/>
-                             <h:outputText value="Pisarz: #{listaksiazki.wybrany.pisarz}"/>
-                             <h:outputText value="Ilość Stron: #{listaksiazki.wybrany.iloscstron}"/>
-                             <h:outputText value="Cena: #{listaksiazki.wybrany.cena}"/>
-                             <h:outputText value="Stan w magazynie: #{listaksiazki.wybrany.stanwmagazynie}"/>
-                                
+
+                            <h:outputText value="Tytuł: #{listaksiazki.wybrany.tytul}"/>
+                            <h:outputText value="Pisarz: #{listaksiazki.wybrany.pisarz}"/>
+                            <h:outputText value="Ilość Stron: #{listaksiazki.wybrany.iloscstron}"/>
+                            <h:outputText value="Cena: #{listaksiazki.wybrany.cena}"/>
+                            <h:outputText value="Stan w magazynie: #{listaksiazki.wybrany.stanwmagazynie}"/>
+
                         </p:panelGrid>
 
                         <br />
                         <p:commandButton value="Wypożycz" update="growl" actionListener="#{listaksiazki.wybrany.wypozycz()}" oncomplete="handleEdytujRequest(xhr, status, args)" />
-                        
+
                     </p:outputPanel>
                 </p:dialog>   
 
-               
+
             </h:form>
         </p:fieldset>
-        
+
         <p:fieldset legend="TWOJE ZAMÓWIENIA" toggleable="true" toggleSpeed="500" collapsed = "true" style="background-color: #cee6ff">                 
             <p:ajax event="toggle" update="@([id$=TableStateDT1])" listener="#{listazamowienia.odswiezZamowieniaLista()}"/>
             <h:form>  
@@ -170,7 +170,7 @@ and open the template in the editor.
                             <p:inputText id="globalFilter" onkeyup="PF('carsTable1').filter()" style="width:150px" placeholder="Wpisz frazę"/>
                         </p:outputPanel>
                     </f:facet>
-                        
+
 
                     <p:column headerText="Tytuł" filterBy="#{zamowienietab.tytul}" sortBy="#{zamowienietab.tytul}" filterMatchMode="contains">
                         <h:outputText value="#{zamowienietab.tytul}" />
@@ -183,23 +183,23 @@ and open the template in the editor.
                     <p:column headerText="Data wypożyczenia: " filterBy="#{zamowienietab.data}" sortBy="#{zamowienietab.data}" filterMatchMode="contains">
                         <h:outputText value="#{zamowienietab.data}" />
                     </p:column>
-                    
+
                     <p:column headerText="Zrealizowano: " filterBy="#{zamowienietab.zrealizowano}" sortBy="#{zamowienietab.zrealizowano}" filterMatchMode="contains">
                         <h:outputText value="#{zamowienietab.zrealizowano}" />
                     </p:column>
-                    
+
                     <p:column headerText="Kwota do zapłaty przy odbiorze " filterBy="#{zamowienietab.cena}" sortBy="#{zamowienietab.zrealizowano}" filterMatchMode="contains">
                         <h:outputText value="#{zamowienietab.cena}" />
                     </p:column>
                 </p:dataTable>
-               
+
             </h:form>
         </p:fieldset>
-        
+
         <center><h3>W przypadku nie odświeżania się tabelek należy odświeżyć stronę</h3></center>
-        
+
         <script type="text/javascript">
-           
+
             function handleEdytujRequest(xhr, status, args) {
                 if (args.wypozycz) {
                     PF('edytorDialog').hide();

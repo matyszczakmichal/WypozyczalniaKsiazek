@@ -11,8 +11,8 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean
-public class DodajKsiazke 
-{
+public class DodajKsiazke {
+
     private String tytul;
     private String pisarz;
     private String iloscstron;
@@ -58,15 +58,12 @@ public class DodajKsiazke
     public void setDostepnosc(String dostepnosc) {
         this.dostepnosc = dostepnosc;
     }
-        
-    
-     
+
     /// metoda dodaj() dodająca nową książkę do bazy
-    public void dodaj () throws SQLException
-    {
-        RequestContext context = RequestContext.getCurrentInstance();                
+    public void dodaj() throws SQLException {
+        RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg = null;
-        
+
         try {
             //Połączenie z bazą danych            
             try {
@@ -77,30 +74,25 @@ public class DodajKsiazke
 
             //Wykonanie wyrażenia SQL i dodanie rekordów
             Statement stmt = con.createStatement();
-            String SQL = "INSERT INTO ksiazki(tytul,pisarz,ilosc_stron,cena,stan_w_magazynie) VALUES ('" + tytul + "','" + pisarz +"','" + iloscstron + "','" + cena + "','" + dostepnosc + "');";
-            boolean rs = stmt.execute(SQL); 
-            
-            if(!rs)
-            {
-                           
-                            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dodano książkę do bazy ","Sukces");
-                            FacesContext.getCurrentInstance().addMessage(null, msg);
-                        }
-                        else
-                        {
-                            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Błąd podczas dodawania książki", "Błąd");
-                            FacesContext.getCurrentInstance().addMessage(null, msg);
-                        }
-                                        
-                } catch (SQLException err) {
-                    
-                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błąd podczas łączenia z serwerem", "Błąd");
-                        FacesContext.getCurrentInstance().addMessage(null, msg);
-                    System.out.println(err.getMessage());
-                }
+            String SQL = "INSERT INTO ksiazki(tytul,pisarz,ilosc_stron,cena,stan_w_magazynie) VALUES ('" + tytul + "','" + pisarz + "','" + iloscstron + "','" + cena + "','" + dostepnosc + "');";
+            boolean rs = stmt.execute(SQL);
+
+            if (!rs) {
+
+                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dodano książkę do bazy ", "Sukces");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            } else {
+                msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Błąd podczas dodawania książki", "Błąd");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+
+        } catch (SQLException err) {
+
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błąd podczas łączenia z serwerem", "Błąd");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            System.out.println(err.getMessage());
+        }
 
     }
-     
-        
- 
+
 }

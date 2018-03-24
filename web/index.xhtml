@@ -4,7 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-      
+
     <h:head>
         <title>Wypożyczalnia książek</title>
     </h:head>
@@ -18,83 +18,83 @@
             <br />
             <h1> Wypożyczalnia książek: </h1>
             <br />
-            
-        <br /><br />
+
+            <br /><br />
             <div align="center">
-            <h:form>
-
-                <p:growl id="growl" showDetail="false" life="3000"/>
-                <h:panelGrid columns="2" cellpadding="5">
-
-                    <h:outputText value="Login: " style="font-size: 20px"/>
-                    <p:inputText id="login" value="#{logowanie.username}" required="true" requiredMessage="Wymagany jest login"/>
-
-                    <h:outputText value="Hasło: " style="font-size: 20px"/>
-                    <p:password id="haslo"  value="#{logowanie.password}" required="true" requiredMessage="Wymagane jest hasło"/>
-                </h:panelGrid>
-
-
-                <br />
-                <p:commandButton value="Zaloguj" update="growl" actionListener="#{logowanie.login}" oncomplete="handleLoginRequest(xhr, status, args)" />
-
-                <br /><br /><br /><br />
-                </h:form>       </div>
                 <h:form>
-             <p:fieldset legend="ZAREJESTRUJ SIĘ" toggleable="true" toggleSpeed="500" collapsed = "true" style="background-color: #cee6ff">  
-                
-                <p:growl id="msgs" showDetail="false" life="3000"/>
-                <center>
-                    <h:panelGrid id="dodajKlienta" columns="2" cellpadding="5">
-                        <h:outputText value="Imię: " />
-                        <p:inputText id="imie" value="#{osobaRejestracja.osoba.imie}" required="true" requiredMessage="Wymagane imię" validatorMessage="Wykryto błędne znaki w polu Imię">  
-                            <f:validateRegex pattern="[a-zA-ZłŁśŚćĆżŻŹźóÓ]+" />
-                        </p:inputText>
-                        
-                                 
-                        
-                        <h:outputText value="Nazwisko: " /> 
-                        <p:inputText id="nazwisko" value="#{osobaRejestracja.osoba.nazwisko}" required="true" requiredMessage="Wymagane nazwisko" validatorMessage="Wykryto błędne znaki w polu Nazwisko">
-                            <f:validateRegex pattern="[a-zA-ZłŁśŚćĆżŻŹźóÓ-]+" />
-                        </p:inputText>
-                        
-                        
-                            
-                            
-                        <h:outputText value="PESEL: " />                        
+
+                    <p:growl id="growl" showDetail="false" life="3000"/>
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <h:outputText value="Login: " style="font-size: 20px"/>
+                        <p:inputText id="login" value="#{logowanie.username}" required="true" requiredMessage="Wymagany jest login"/>
+
+                        <h:outputText value="Hasło: " style="font-size: 20px"/>
+                        <p:password id="haslo"  value="#{logowanie.password}" required="true" requiredMessage="Wymagane jest hasło"/>
+                    </h:panelGrid>
+
+
+                    <br />
+                    <p:commandButton value="Zaloguj" update="growl" actionListener="#{logowanie.login}" oncomplete="handleLoginRequest(xhr, status, args)" />
+
+                    <br /><br /><br /><br />
+                </h:form>       </div>
+            <h:form>
+                <p:fieldset legend="ZAREJESTRUJ SIĘ" toggleable="true" toggleSpeed="500" collapsed = "true" style="background-color: #cee6ff">  
+
+                    <p:growl id="msgs" showDetail="false" life="3000"/>
+                    <center>
+                        <h:panelGrid id="dodajKlienta" columns="2" cellpadding="5">
+                            <h:outputText value="Imię: " />
+                            <p:inputText id="imie" value="#{osobaRejestracja.osoba.imie}" required="true" requiredMessage="Wymagane imię" validatorMessage="Wykryto błędne znaki w polu Imię">  
+                                <f:validateRegex pattern="[a-zA-ZłŁśŚćĆżŻŹźóÓ]+" />
+                            </p:inputText>
+
+
+
+                            <h:outputText value="Nazwisko: " /> 
+                            <p:inputText id="nazwisko" value="#{osobaRejestracja.osoba.nazwisko}" required="true" requiredMessage="Wymagane nazwisko" validatorMessage="Wykryto błędne znaki w polu Nazwisko">
+                                <f:validateRegex pattern="[a-zA-ZłŁśŚćĆżŻŹźóÓ-]+" />
+                            </p:inputText>
+
+
+
+
+                            <h:outputText value="PESEL: " />                        
                             <p:inputMask id="pesel" value="#{osobaRejestracja.osoba.pesel}" mask="99999999999"  validatorMessage="PESEL musi zawierać 11 znaków" required="true" requiredMessage="Wymagany PESEL">
-                            <f:validateLength minimum="11" maximum="11"/>                            
+                                <f:validateLength minimum="11" maximum="11"/>                            
                             </p:inputMask>
-                        
-                        
-                        <h:outputText value="Login: " /> 
-                        <p:inputText id="login" value="#{osobaRejestracja.osoba.login}" required="true" requiredMessage="Wymagany login">
-                             </p:inputText>
-                                       
-                        
-                        <h:outputText value="Hasło: " /> 
-                        <p:password id="haslo" value="#{osobaRejestracja.osoba.haslo}" required="true" requiredMessage="Wymagane hasło"/>
-                            
-                            
+
+
+                            <h:outputText value="Login: " /> 
+                            <p:inputText id="login" value="#{osobaRejestracja.osoba.login}" required="true" requiredMessage="Wymagany login">
+                            </p:inputText>
+
+
+                            <h:outputText value="Hasło: " /> 
+                            <p:password id="haslo" value="#{osobaRejestracja.osoba.haslo}" required="true" requiredMessage="Wymagane hasło"/>
+
+
                             <h:outputText value="Powtórz hasło: " /> 
                             <p:password id="haslopowt" value="#{osobaRejestracja.osoba.powthaslo}" required="true" requiredMessage="Wymagane hasło"/>
-                            
-                                        
-                            
-                        <h:outputText value="" />
-                        <h:outputText value="" />
-                        <p:commandButton value="Załóż konto" update="msgs" actionListener="#{osobaRejestracja.dodaj()}">  
-                             
-                        </p:commandButton>
-                        
-                                                
-                        <p:commandButton value="Wyczyść pola" style="margin-right:20px;" >
-                        <p:ajax update="dodajKlienta" resetValues="true" />                        
-                         </p:commandButton>
 
-                    </h:panelGrid>
-                </center>
-            </p:fieldset>
-        </h:form>
+
+
+                            <h:outputText value="" />
+                            <h:outputText value="" />
+                            <p:commandButton value="Załóż konto" update="msgs" actionListener="#{osobaRejestracja.dodaj()}">  
+
+                            </p:commandButton>
+
+
+                            <p:commandButton value="Wyczyść pola" style="margin-right:20px;" >
+                                <p:ajax update="dodajKlienta" resetValues="true" />                        
+                            </p:commandButton>
+
+                        </h:panelGrid>
+                    </center>
+                </p:fieldset>
+            </h:form>
 
         </center> 
 
@@ -109,7 +109,7 @@
                 if (args.pracownikLogged) {
                     window.location.href = "faces/pracownik.xhtml";
                 }
-                
+
             }
         </script>
 

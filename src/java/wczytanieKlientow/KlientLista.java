@@ -30,8 +30,7 @@ public class KlientLista {
             String SQL = "SELECT osoba.id_osoba, imie, nazwisko, pesel, login, haslo, rodzaj FROM osoba JOIN stanowisko ON stanowisko.id_osoba = osoba.id_osoba;";
             ResultSet rs = stmt.executeQuery(SQL);
 
-               while(rs.next())
-            {
+            while (rs.next()) {
                 String idosoba = rs.getString("osoba.id_osoba");
                 String imie = rs.getString("imie");
                 String nazwisko = rs.getString("nazwisko");
@@ -39,13 +38,11 @@ public class KlientLista {
                 String login = rs.getString("login");
                 String haslo = rs.getString("haslo");
                 String rodzaj = rs.getString("rodzaj");
-                
-                if(rodzaj.equals("2"))
-                {
-                klient.add(new Klient(idosoba, imie, nazwisko, pesel, login, haslo, rodzaj));
+
+                if (rodzaj.equals("2")) {
+                    klient.add(new Klient(idosoba, imie, nazwisko, pesel, login, haslo, rodzaj));
                 }
-            
-            
+
             }
 
         } catch (SQLException err) {
@@ -56,4 +53,3 @@ public class KlientLista {
 
     }
 }
-
