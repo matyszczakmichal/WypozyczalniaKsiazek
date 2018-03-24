@@ -249,7 +249,7 @@
                             </p:panelGrid>
 
                             <br />
-                            <p:commandButton value="Edytuj" update="growl" actionListener="#{listaklienci.wybrany.edytuj()}" oncomplete="handleEdytuj1Request(xhr, status, args)" />
+                            <p:commandButton value="Edytuj" update="growl @([id$=tableStateDT1])" actionListener="#{listaklienci.wybrany.edytuj()}" oncomplete="handleEdytuj1Request(xhr, status, args)" />
 
 
                         </p:outputPanel>

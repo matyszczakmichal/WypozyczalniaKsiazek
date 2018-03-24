@@ -2,6 +2,8 @@ package dodawanieOsob;
 
 import configuration.DatabaseConfiguration;
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,8 +32,20 @@ public class OsobaWizard implements Serializable {
     }
 
     // metoda dodaj() dodająca do bazy danych użytkownika poprzez wizarda
-    public void dodaj() {
+    public void dodaj() throws NoSuchAlgorithmException {
         FacesMessage msg = null;
+        String haslo = osoba.getHaslo();
+
+        ///Hashowanie haseł i sprawdzanie poprawności podanych
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(haslo.getBytes());
+
+        byte byteData[] = md.digest();
+
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
 
         try {
             //Połączenie z bazą danych            
@@ -43,7 +57,7 @@ public class OsobaWizard implements Serializable {
 
             //Wykonanie wyrażenia SQL i dodanie rekordów
             Statement stmt = con.createStatement();
-            String SQL = "INSERT INTO Osoba(imie,nazwisko,pesel,login,haslo) VALUES ('" + osoba.getImie() + "','" + osoba.getNazwisko() + "','" + osoba.getPesel() + "','" + osoba.getLogin() + "','" + osoba.getHaslo() + "');";
+            String SQL = "INSERT INTO Osoba(imie,nazwisko,pesel,login,haslo) VALUES ('" + osoba.getImie() + "','" + osoba.getNazwisko() + "','" + osoba.getPesel() + "','" + osoba.getLogin() + "','" + sb + "');";
             boolean rs = stmt.execute(SQL);
 
             if (!rs) {

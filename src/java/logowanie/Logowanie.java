@@ -1,6 +1,8 @@
 package logowanie;
 
 import configuration.DatabaseConfiguration;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -68,7 +70,7 @@ public class Logowanie {
     }
 
     //metoda do zalogowania
-    public void login() throws InstantiationException, IllegalAccessException {
+    public void login() throws InstantiationException, IllegalAccessException, NoSuchAlgorithmException {
 
         RequestContext context = RequestContext.getCurrentInstance();
         FacesContext ctx = FacesContext.getCurrentInstance();
@@ -76,6 +78,7 @@ public class Logowanie {
         boolean pracownikLogged = false;
         boolean klientLogged = false;
         FacesMessage message = null;
+
         try {
             //Połączenie z bazą danych            
             try {
@@ -84,9 +87,20 @@ public class Logowanie {
             }
             Connection con = DriverManager.getConnection(DatabaseConfiguration.URL, DatabaseConfiguration.USER, DatabaseConfiguration.PASSWORD);
 
+            ///Hashowanie haseł i sprawdzanie poprawności podanych
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(password.getBytes());
+
+            byte byteData[] = md.digest();
+
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < byteData.length; i++) {
+                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+            }
+
             //Wykonanie wyrażenia SQL i załadowanie rekordów
             Statement stmt = con.createStatement();
-            String SQL = "SELECT * FROM osoba JOIN stanowisko ON stanowisko.id_osoba = osoba.id_osoba WHERE login= '" + username + "' and haslo= '" + password + "'";
+            String SQL = "SELECT * FROM osoba JOIN stanowisko ON stanowisko.id_osoba = osoba.id_osoba WHERE login= '" + username + "' and haslo= '" + sb + "'";
             ResultSet rs = stmt.executeQuery(SQL);
 
             if (rs.next()) {

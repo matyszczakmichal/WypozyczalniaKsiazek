@@ -101,7 +101,7 @@ and open the template in the editor.
             <p:ajax event="toggle" update="@([id$=TableStateDT])" listener="#{listaksiazki.odswiezKsiazkiLista()}"/>
             <h:form>  
                 <p:growl id="growl" showDetail="false" life="3000"/>
-                <p:dataTable id="tableStateDT" var="ksiazkatab" value="#{listaksiazki.ksiazka}" widgetVar="carsTable" rows="10" paginator="true"
+                <p:dataTable id="TableStateDT" var="ksiazkatab" value="#{listaksiazki.ksiazka}" widgetVar="carsTable" rows="10" paginator="true"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10"
                              selectionMode="single" selection="#{listaksiazki.wybrany}" rowKey="#{ksiazkatab.idksiazka}"
@@ -145,7 +145,7 @@ and open the template in the editor.
                         </p:panelGrid>
 
                         <br />
-                        <p:commandButton value="Wypożycz" update="growl" actionListener="#{listaksiazki.wybrany.wypozycz()}" oncomplete="handleEdytujRequest(xhr, status, args)" />
+                        <p:commandButton value="Wypożycz" update="growl @([id$=TableStateDT])" actionListener="#{listaksiazki.wybrany.wypozycz()}" oncomplete="handleEdytujRequest(xhr, status, args)" />
 
                     </p:outputPanel>
                 </p:dialog>   

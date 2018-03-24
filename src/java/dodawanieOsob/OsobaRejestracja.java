@@ -42,6 +42,28 @@ public class OsobaRejestracja implements Serializable {
         String haslo = osoba.getHaslo();
         String powthaslo = osoba.getPowthaslo();
 
+        ///Hashowanie haseł i sprawdzanie poprawności podanych
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(haslo.getBytes());
+
+        byte byteData[] = md.digest();
+
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        MessageDigest md1 = MessageDigest.getInstance("SHA-256");
+        md1.update(powthaslo.getBytes());
+
+        byte byteData1[] = md1.digest();
+
+        //convert the byte to hex format method 1
+        StringBuffer sb1 = new StringBuffer();
+        for (int i = 0; i < byteData1.length; i++) {
+            sb1.append(Integer.toString((byteData1[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
         try {
             //Połączenie z bazą danych            
             try {
@@ -52,9 +74,9 @@ public class OsobaRejestracja implements Serializable {
 
             //Wykonanie wyrażenia SQL i dodanie rekordów
             // jeśli hasła są różne błąd
-            if (haslo.equals(powthaslo)) {
+            if (sb.toString().equals(sb1.toString())) {
                 Statement stmt = con.createStatement();
-                String SQL = "INSERT INTO Osoba(imie,nazwisko,pesel,login,haslo) VALUES ('" + osoba.getImie() + "','" + osoba.getNazwisko() + "','" + osoba.getPesel() + "','" + osoba.getLogin() + "','" + haslo + "');";
+                String SQL = "INSERT INTO Osoba(imie,nazwisko,pesel,login,haslo) VALUES ('" + osoba.getImie() + "','" + osoba.getNazwisko() + "','" + osoba.getPesel() + "','" + osoba.getLogin() + "','" + sb + "');";
                 boolean rs = stmt.execute(SQL);
 
                 if (!rs) {
