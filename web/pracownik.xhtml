@@ -1,0 +1,358 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:form>
+            <title>Panel pracownika wypożyczalni książek</title>
+        </h:form>
+
+    </h:head>
+
+    
+    <h:body>
+        <h:body  style="background-color: #99ccff " />   
+        
+        <f:metadata>
+            <f:viewAction action="#{logowanie.sprawdzLogowaniePracownik()}" />
+        </f:metadata> 
+        
+        <h:form>
+        <h:panelGrid columns="1">
+            <p:commandButton value="Wyloguj" action="#{logowanie.wyloguj()}" icon="ui-icon-extlink" />
+        </h:panelGrid>
+        </h:form>
+        
+        <center>
+        <h:form>
+            
+            
+            <center><h2>Panel pracownika wypożyczalni książek</h2></center><br />
+            <center><h3>Witaj użytkowniku #{logowanie.username}</h3></center>
+           
+            
+            
+        </h:form>
+        </center>
+        <p:separator />
+
+         <h:form>
+            <p:fieldset legend="DODAJ KSIĄŻKĘ" toggleable="true" toggleSpeed="500" collapsed = "true" style="background-color: #cee6ff">  
+                
+                <p:growl id="msgs" showDetail="false" life="3000"/>
+                <center>
+                    <h:panelGrid id="dodajKsiazke" columns="4" cellpadding="5">
+                        <h:outputText value="Tytuł: " />
+                        <p:inputText id="tytul" value="#{dodajKsiazke.tytul}" required="true" requiredMessage="Wymagane podanie tytułu" validatorMessage="Wykryto błędne znaki w polu Tytuł">  
+                            <f:validateRegex pattern="[a-zA-ZłŁśŚćĆżŻŹźóÓ]+" />
+                        </p:inputText>
+                        
+                        
+                        <h:outputText value="Pisarz: " />
+                        <p:inputText id="pisarz" value="#{dodajKsiazke.pisarz}" required="true" requiredMessage="Wymagane podanie Pisarza" validatorMessage="Wykryto błędne znaki w polu Pisarz"> 
+                           <f:validateRegex pattern="[a-zA-ZłŁśŚćĆżŻŹźóÓ]+" />
+                            </p:inputText>
+                        
+                        
+                        <h:outputText value="Ilość stron " /> 
+                        <p:inputText id="iloscstron" value="#{dodajKsiazke.iloscstron}" required="true" requiredMessage="Wymagana ilość stron" validatorMessage="Wykryto błędne znaki w polu Ilość Stron">
+                            
+                        </p:inputText>
+                        
+                        <h:outputText value="Cena: " /> 
+                        <p:inputText id="cena" value="#{dodajKsiazke.cena}"  required="true" requiredMessage="Wymagane podanie ceny" >
+                                            
+                        </p:inputText>
+                            
+                            
+                        <h:outputText value="Ilość dostępnych: " />   
+                        
+                        <p:inputMask id="ilosc" value="#{dodajKsiazke.dostepnosc}" mask="99"  validatorMessage="PESEL musi zawierać 11 znaków" required="true" requiredMessage="Wymagany PESEL">
+                            <f:validateLength minimum="1" maximum="99"/>                            
+                            </p:inputMask>
+                        
+                        
+                        
+                            
+                        <h:outputText value="" />
+                        <h:outputText value="" />
+                        <p:commandButton value="Dodaj książkę" update="msgs" actionListener="#{dodajKsiazke.dodaj()}">  
+                             
+                        </p:commandButton>
+                        
+                                                
+                        <p:commandButton value="Wyczyść pola" style="margin-right:20px;" >
+                        <p:ajax update="dodajKsiazke" resetValues="true" />                        
+                         </p:commandButton>
+
+                    </h:panelGrid>
+                </center>
+            </p:fieldset>
+        </h:form>
+
+        <h:form>
+            <p:fieldset legend="DODAJ OSOBĘ" toggleable="true" toggleSpeed="500" collapsed = "true" style="background-color: #cee6ff" >  
+
+
+                <center>
+                    <h:panelGrid columns="4" cellpadding="5">
+                        <p:growl id="msg" sticky="3000" showDetail="true"/>
+
+                        <p:wizard flowListener="#{osobaWizard.onFlowProcess}">
+                            <p:tab id="personal" title="Personalia">
+                                <p:panel header="Personalia nowej osoby">
+                                    <p:messages />
+                                    <h:panelGrid columns="2" columnClasses="label, value">
+                                        <h:outputText value="Imie: *" />
+                                        <p:inputText value="#{osobaWizard.osoba.imie}" required="true" requiredMessage ="Imię: Proszę podać imię" validatorMessage="Wpisano złe dane w pole imię">
+                                            <f:validateRegex pattern="[a-zA-ZłŁśŚćĆżŻŹźóÓ]+" />
+                                        </p:inputText>
+
+                                        <h:outputText value="Nazwisko: *" />
+                                        <p:inputText value="#{osobaWizard.osoba.nazwisko}" required="true" requiredMessage ="Nazwisko: Proszę podać nazwisko" validatorMessage="Wpisano złe dane w pole nazwisko">
+                                        <f:validateRegex pattern="[a-zA-ZłŁśŚćĆżŻŹźóÓ]+" />
+                                        </p:inputText>
+
+                                        <h:outputText value="PESEL: *" />
+                                        <p:inputMask  value="#{osobaWizard.osoba.pesel}" mask="99999999999"  validatorMessage="PESEL musi zawierać 11 znaków" required="true" requiredMessage="Wymagany PESEL">
+                                        <f:validateLength minimum="11" maximum="11"/>                            
+                                        </p:inputMask>
+                                              
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+
+                           
+                            <p:tab id="logowanie" title="Uwierzytelnianie">
+                                <p:panel header="Dane do uwierzytelniania">
+                                    <p:messages />
+                                    <h:panelGrid columns="2" columnClasses="label, value">
+                                        <h:outputText value="Login: *" />
+                                        <p:inputText value="#{osobaWizard.osoba.login}" required="true" requiredMessage ="Login: Proszę podać login"/>
+
+                                        <h:outputText value="Hasło: *" />
+                                        <p:inputText value="#{osobaWizard.osoba.haslo}" required="true" requiredMessage ="Hasło: Proszę podać hasło"/>
+
+                                        <h:outputText value="Rodzaj ( 1 - pracownik, 2 - klient ): *" />
+                                        <p:inputText value="#{osobaWizard.osoba.rodzaj}" required="true" requiredMessage ="Rodzaj: Proszę podać rodzaj użytkownika" validatorMessage="Proszę wpisać numer 1 lub 2">
+                                        <f:validateRegex pattern="[1,2]" />
+                                        </p:inputText>
+
+
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+
+                            <p:tab id="confirm" title="Potwierdzenie">
+                                <p:panel header="Confirmation">
+                                    <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
+                                        <h:panelGrid columns="2" columnClasses="label, value">
+                                            <h:outputText value="Imie: " />
+                                            <h:outputText value="#{osobaWizard.osoba.imie}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="Nazwisko: " />
+                                            <h:outputText value="#{osobaWizard.osoba.nazwisko}" styleClass="outputLabel"/>
+
+                                            <h:outputText value="Pesel: " />
+                                            <h:outputText value="#{osobaWizard.osoba.pesel}" styleClass="outputLabel"/>
+                                            
+                                        </h:panelGrid>
+
+                                        
+
+                                        <h:panelGrid columns="2" columnClasses="label, value">
+                                             
+                                            <h:outputText value="Login: " />
+                                            <h:outputText value="#{osobaWizard.osoba.login}" styleClass="outputLabel"/> 
+
+                                            <h:outputText value="Hasło: " />
+                                            <h:outputText value="#{osobaWizard.osoba.haslo}" styleClass="outputLabel"/> 
+
+                                            <h:outputText value="Rodzaj użytkownika: " />
+                                            <h:outputText value="#{osobaWizard.osoba.rodzaj}" styleClass="outputLabel"/> 
+
+                                        </h:panelGrid>
+
+
+                                    </h:panelGrid>
+
+                                    <p:commandButton value="Dodaj" actionListener="#{osobaWizard.dodaj}" update="msg" process="@this"/>
+                                </p:panel>
+                            </p:tab>
+                        </p:wizard>
+                    </h:panelGrid>
+                </center>
+
+            </p:fieldset>
+        </h:form>
+        
+        <h:form> 
+            <p:fieldset legend="SZUKANIE / EDYCJA KLIENTÓW" toggleable="true" toggleSpeed="500" collapsed = "true" style="background-color: #cee6ff">                 
+                <p:ajax event="toggle" update="@([id$=tableStateDT1])" listener="#{listaklienci.odswiezKlientLista()}"/>
+                <h:form>
+                    
+                    <p:growl id="growl" showDetail="false" life="3000"/>
+                    <p:dataTable id="tableStateDT1" var="klienttab" value="#{listaklienci.klient}" widgetVar="carsTable1" rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10"
+                                 selectionMode="single" selection="#{listaklienci.wybrany}" rowKey="#{klienttab.idosoba}"
+                                 emptyMessage="Brak wyników wyszukiwania">
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Szukaj pracownika:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('carsTable1').filter()" style="width:150px" placeholder="Wpisz frazę"/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:ajax event="rowSelect" update="@([id$=edytor1])" oncomplete="PF('edytorDialog1').show()" />   
+
+
+                        <p:column headerText="Imię" filterBy="#{klienttab.imie}" sortBy="#{klienttab.imie}" filterMatchMode="contains">
+                            <h:outputText value="#{klienttab.imie}" />
+                        </p:column>
+
+                        <p:column headerText="Nazwisko" filterBy="#{klienttab.nazwisko}" sortBy="#{klienttab.nazwisko}" filterMatchMode="contains">            
+                            <h:outputText value="#{klienttab.nazwisko}" />
+                        </p:column>
+
+                        <p:column headerText="PESEL" filterBy="#{klienttab.pesel}" sortBy="#{klienttab.pesel}" filterMatchMode="contains">
+                            <h:outputText value="#{klienttab.pesel}" />
+                        </p:column>
+                        
+                    </p:dataTable>
+
+
+
+                    <p:dialog header="Edycja" widgetVar="edytorDialog1" modal="true" showEffect="fade" hideEffect="fade" resizable="false"  >
+                        <p:outputPanel id="edytor1" style="text-align:center;">
+                            <p:panelGrid  columns="2" rendered="#{not empty listaklienci.wybrany}" columnClasses="label,value"  style="background-color: #99ccff">
+
+                                <h:outputText value="Imię:"/>
+                                <p:inputText value="#{listaklienci.wybrany.imie}" required="true" requiredMessage="Proszę wpisać nazwisko" validatorMessage="Wykryto błędne znaki w polu Imię">
+                                    <f:validateRegex pattern="[a-zA-ZłŁśŚćĆżŻŹźóÓ]+" />
+                                       </p:inputText> 
+
+                                <h:outputText value="Nazwisko:" />
+                                <p:inputText value="#{listaklienci.wybrany.nazwisko}" required="true" requiredMessage="Proszę wpisać nazwisko" validatorMessage="Wykryto błędne znaki w polu Nazwisko">
+                                    <f:validateRegex pattern="[a-zA-ZłŁśŚćĆżŻŹźóÓ]+" />
+                                       </p:inputText> 
+
+                                <h:outputText value="PESEL:" />
+                                <p:inputMask  value="#{listaklienci.wybrany.pesel}" mask="99999999999"  validatorMessage="PESEL musi zawierać 11 znaków" required="true" requiredMessage="Wymagany PESEL">
+                                        <f:validateLength minimum="11" maximum="11"/>                            
+                                        </p:inputMask>
+                                
+                                
+                            </p:panelGrid>
+
+                            <br />
+                            <p:commandButton value="Edytuj" update="growl" actionListener="#{listaklienci.wybrany.edytuj()}" oncomplete="handleEdytuj1Request(xhr, status, args)" />
+                            
+
+                        </p:outputPanel>
+                    </p:dialog>   
+
+
+                </h:form>
+            </p:fieldset>
+        </h:form>
+        
+        <p:fieldset legend="REALIZACJA ZAMÓWIEŃ" toggleable="true" toggleSpeed="500" collapsed = "true" style="background-color: #cee6ff">                 
+            <p:ajax event="toggle" update="@([id$=TableStateDT])" listener="#{listazamowienia.odswiezZamowieniaLista()}"/>
+            <h:form>  
+                <p:growl id="growl" showDetail="false" life="3000"/>
+                <p:dataTable id="tableStateDT" var="zamowienietab" value="#{listazamowienia.zamowienia}" widgetVar="carsTable2" rows="10" paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10"
+                             selectionMode="single" selection="#{listazamowienia.wybrany}" rowKey="#{zamowienietab.idzamowienia}"
+                             emptyMessage="Brak wyników wyszukiwania">
+
+                    <f:facet name="header">
+                        <h:commandLink value="Zapisz do pdf ">     
+                            
+                            <p:dataExporter type="pdf" target="tableStateDT" fileName="Zamowienia" pageOnly="false" preProcessor="#{customizedDocumentsView.preProcessPDF}" encoding="windows-1250"/>
+                        </h:commandLink>
+                        
+                    </f:facet>
+
+                    <p:ajax event="rowSelect" update="@([id$=edytor2])" oncomplete="PF('edytorDialog2').show()" />   
+
+
+                    <p:column headerText="Tytuł" filterBy="#{zamowienietab.tytul}" sortBy="#{zamowienietab.tytul}" filterMatchMode="contains">
+                        <h:outputText value="#{zamowienietab.tytul}" />
+                    </p:column>
+
+                    <p:column headerText="Pisarz" filterBy="#{zamowienietab.pisarz}" sortBy="#{zamowienietab.pisarz}" filterMatchMode="contains">            
+                        <h:outputText value="#{zamowienietab.pisarz}" />
+                    </p:column>
+
+                    <p:column headerText="Klient: " filterBy="#{zamowienietab.nazwisko}" sortBy="#{zamowienietab.nazwisko}" filterMatchMode="contains">
+                        <h:outputText value="#{zamowienietab.imie} #{zamowienietab.nazwisko}" />
+                    </p:column>
+                    
+                    <p:column headerText="PESEL: " filterBy="#{zamowienietab.pesel}" sortBy="#{zamowienietab.pesel}" filterMatchMode="contains">
+                        <h:outputText value="#{zamowienietab.pesel}" />
+                    </p:column>
+                    
+                    <p:column headerText="Data zamówienia: " filterBy="#{zamowienietab.data}" sortBy="#{zamowienietab.data}" filterMatchMode="contains">
+                        <h:outputText value="#{zamowienietab.data}" />
+                    </p:column>
+                    
+                    <p:column headerText="Zrealizowano: " filterBy="#{zamowienietab.zrealizowano}" sortBy="#{zamowienietab.zrealizowano}" filterMatchMode="contains">
+                        <h:outputText value="#{zamowienietab.zrealizowano}" />
+                    </p:column>
+                </p:dataTable>
+
+
+
+                <p:dialog header="Realizacja zamówienia" widgetVar="edytorDialog2" modal="true" showEffect="fade" hideEffect="fade" resizable="false" style="background-color: #cee6ff">
+                    <p:outputPanel id="edytor2" style="text-align:center;">
+                        <p:panelGrid  columns="1" rendered="#{not empty listazamowienia.wybrany}" columnClasses="label,value" >
+                           
+                             <h:outputText value="Tytuł: #{listazamowienia.wybrany.tytul}"/>
+                             <h:outputText value="Pisarz: #{listazamowienia.wybrany.pisarz}"/>
+                             <h:outputText value="Kupujący: #{listazamowienia.wybrany.imie} #{listazamowienia.wybrany.imie}"/>
+                             <h:outputText value="Data #{listazamowienia.wybrany.data}"/>
+                             
+                                
+                        </p:panelGrid>
+
+                        <br />
+                        <p:commandButton value="Realizuj zamówienie" update="growl" actionListener="#{listazamowienia.wybrany.zrealizuj()}" oncomplete="handleEdytuj2Request(xhr, status, args)" />
+                        
+                    </p:outputPanel>
+                </p:dialog>   
+
+               
+            </h:form>
+        </p:fieldset>
+        
+<center><h3>W przypadku nie odświeżania się tabelek należy odświeżyć stronę</h3></center>
+
+        <script type="text/javascript"> 
+            function handleEdytujRequest(xhr, status, args) {
+                if (args.edytuj) {                            
+                    PF('edytorDialog').hide();
+                    
+                }                                        
+            }
+             function handleEdytuj1Request(xhr, status, args) {
+                if (args.edytuj) {                            
+                    PF('edytorDialog1').hide();
+                    
+                }                                        
+            }
+            function handleEdytuj2Request(xhr, status, args) {
+                if (args.edytuj) {                            
+                    PF('edytorDialog2').hide();
+                    
+                }                                        
+            }
+        </script>         
+        
+
+    </h:body>
+</html>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Panel klienta</title>
+
+    </h:head>
+
+    <h:body>
+        
+        <h:body  style="background-color: #99ccff " /> 
+        <f:metadata>
+            <f:viewAction action="#{logowanie.sprawdzLogowanieKlient()}" />
+        </f:metadata>
+        
+        <h:form>
+        <h:panelGrid columns="1">
+            <p:commandButton value="Wyloguj" action="#{logowanie.wyloguj()}" icon="ui-icon-extlink" />
+        </h:panelGrid>
+        </h:form>
+        
+        <center>
+        <h:form>
+            <h:panelGrid columns="3">
+            
+                <center><h2>Panel Klienta wypożyczalni książek</h2></center>
+                <center><h3>Witaj użytkowniku #{logowanie.username}</h3></center>
+           
+            
+            </h:panelGrid>
+        </h:form>
+        </center>
+        
+        <p:separator />
+
+        
+
+        <p:fieldset legend="ZBIÓR KSIĄŻEK" toggleable="true" toggleSpeed="500" collapsed = "true" style="background-color: #cee6ff">                 
+
+            <p:ajax event="toggle" update="@([id$=cars])" listener="#{listaksiazki.odswiezKsiazkiLista()}"/>
+            <h:form>
+
+                <p:dataGrid var="ksiazkatab" value="#{listaksiazki.ksiazka}" columns="3" rows="12" paginator="true" id="cars" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="6,12,16" style="background-color: #cee6ff">
+                    
+                    
+                    <p:panel header="#{ksiazkatab.tytul}" style="text-align:center" >
+                        <h:panelGrid columns="1" style="width:100%">
+
+                            
+                            <p:commandLink update="@([id$=szczegoly])" oncomplete="PF('szczegolyDialog').show()" title="Pokaż opis">
+                                <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                <f:setPropertyActionListener value="#{ksiazkatab}" target="#{listaksiazki.wybrany}" />
+                            </p:commandLink>
+                            
+                           
+                        </h:panelGrid>
+                    </p:panel>
+
+                </p:dataGrid>
+
+                <p:dialog widgetVar="szczegolyDialog" modal="true" showEffect="explode" hideEffect="explode" resizable="false" style="background-color: #cee6ff">
+
+                    <p:outputPanel id="szczegoly" style="text-align:center;">
+                        <p:panelGrid  columns="2" rendered="#{not empty listaksiazki.wybrany}" columnClasses="label,value">
+
+                            <f:facet name="header">
+
+                                <h:outputText value="#{listaksiazki.wybrany.tytul}" />
+                            </f:facet>
+
+                            <h:outputText value="Pisarz:" />
+                            <h:outputText value="#{listaksiazki.wybrany.pisarz}" />
+
+                            <h:outputText value="Ilość stron" />
+                            <h:outputText value="#{listaksiazki.wybrany.iloscstron}" />
+
+                            <h:outputText value="Cena" />
+                            <h:outputText value="#{listaksiazki.wybrany.cena}" />
+
+                            <h:outputText value="Stan w magazynie:" />
+                            <h:outputText value="#{listaksiazki.wybrany.stanwmagazynie}" />
+
+                           
+                        </p:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+                                
+            </h:form>
+
+        </p:fieldset>
+
+        <p:fieldset legend="WYPOŻYCZ KSIĄŻKĘ" toggleable="true" toggleSpeed="500" collapsed = "true" style="background-color: #cee6ff">                 
+            <p:ajax event="toggle" update="@([id$=TableStateDT])" listener="#{listaksiazki.odswiezKsiazkiLista()}"/>
+            <h:form>  
+                <p:growl id="growl" showDetail="false" life="3000"/>
+                <p:dataTable id="tableStateDT" var="ksiazkatab" value="#{listaksiazki.ksiazka}" widgetVar="carsTable" rows="10" paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10"
+                             selectionMode="single" selection="#{listaksiazki.wybrany}" rowKey="#{ksiazkatab.idksiazka}"
+                             emptyMessage="Brak wyników wyszukiwania">
+
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Szukaj książki: " />
+                            <p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()" style="width:150px" placeholder="Wpisz frazę"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:ajax event="rowSelect" update="@([id$=edytor])" oncomplete="PF('edytorDialog').show()" />   
+
+
+                    <p:column headerText="Tytuł" filterBy="#{ksiazkatab.tytul}" sortBy="#{ksiazkatab.tytul}" filterMatchMode="contains">
+                        <h:outputText value="#{ksiazkatab.tytul}" />
+                    </p:column>
+
+                    <p:column headerText="Pisarz" filterBy="#{ksiazkatab.pisarz}" sortBy="#{ksiazkatab.pisarz}" filterMatchMode="contains">            
+                        <h:outputText value="#{ksiazkatab.pisarz}" />
+                    </p:column>
+
+                    <p:column headerText="Dostępność: " filterBy="#{ksiazkatab.stanwmagazynie}" sortBy="#{ksiazkatab.stanwmagazynie}" filterMatchMode="contains">
+                        <h:outputText value="#{ksiazkatab.stanwmagazynie}" />
+                    </p:column>
+                </p:dataTable>
+
+
+
+                <p:dialog header="Okno wypożyczeń" widgetVar="edytorDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" style="background-color: #cee6ff">
+                    <p:outputPanel id="edytor" style="text-align:center;">
+                        <p:panelGrid  columns="1" rendered="#{not empty listaksiazki.wybrany}" columnClasses="label,value" >
+                           
+                             <h:outputText value="Tytuł: #{listaksiazki.wybrany.tytul}"/>
+                             <h:outputText value="Pisarz: #{listaksiazki.wybrany.pisarz}"/>
+                             <h:outputText value="Ilość Stron: #{listaksiazki.wybrany.iloscstron}"/>
+                             <h:outputText value="Cena: #{listaksiazki.wybrany.cena}"/>
+                             <h:outputText value="Stan w magazynie: #{listaksiazki.wybrany.stanwmagazynie}"/>
+                                
+                        </p:panelGrid>
+
+                        <br />
+                        <p:commandButton value="Wypożycz" update="growl" actionListener="#{listaksiazki.wybrany.wypozycz()}" oncomplete="handleEdytujRequest(xhr, status, args)" />
+                        
+                    </p:outputPanel>
+                </p:dialog>   
+
+               
+            </h:form>
+        </p:fieldset>
+        
+        <p:fieldset legend="TWOJE ZAMÓWIENIA" toggleable="true" toggleSpeed="500" collapsed = "true" style="background-color: #cee6ff">                 
+            <p:ajax event="toggle" update="@([id$=TableStateDT1])" listener="#{listazamowienia.odswiezZamowieniaLista()}"/>
+            <h:form>  
+                <p:growl id="growl" showDetail="false" life="3000"/>
+                <p:dataTable id="tableStateDT1" var="zamowienietab" value="#{listazamowienia.zamowienia}" widgetVar="carsTable1" rows="10" paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10"
+                             selectionMode="single" selection="#{listazamowienia.wybrany}" rowKey="#{zamowienietab.idzamowienia}"
+                             emptyMessage="Brak wyników wyszukiwania">
+
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Szukaj zamówienia: " />
+                            <p:inputText id="globalFilter" onkeyup="PF('carsTable1').filter()" style="width:150px" placeholder="Wpisz frazę"/>
+                        </p:outputPanel>
+                    </f:facet>
+                        
+
+                    <p:column headerText="Tytuł" filterBy="#{zamowienietab.tytul}" sortBy="#{zamowienietab.tytul}" filterMatchMode="contains">
+                        <h:outputText value="#{zamowienietab.tytul}" />
+                    </p:column>
+
+                    <p:column headerText="Pisarz" filterBy="#{zamowienietab.pisarz}" sortBy="#{zamowienietab.pisarz}" filterMatchMode="contains">            
+                        <h:outputText value="#{zamowienietab.pisarz}" />
+                    </p:column>
+
+                    <p:column headerText="Data wypożyczenia: " filterBy="#{zamowienietab.data}" sortBy="#{zamowienietab.data}" filterMatchMode="contains">
+                        <h:outputText value="#{zamowienietab.data}" />
+                    </p:column>
+                    
+                    <p:column headerText="Zrealizowano: " filterBy="#{zamowienietab.zrealizowano}" sortBy="#{zamowienietab.zrealizowano}" filterMatchMode="contains">
+                        <h:outputText value="#{zamowienietab.zrealizowano}" />
+                    </p:column>
+                    
+                    <p:column headerText="Kwota do zapłaty przy odbiorze " filterBy="#{zamowienietab.cena}" sortBy="#{zamowienietab.zrealizowano}" filterMatchMode="contains">
+                        <h:outputText value="#{zamowienietab.cena}" />
+                    </p:column>
+                </p:dataTable>
+               
+            </h:form>
+        </p:fieldset>
+        
+        <center><h3>W przypadku nie odświeżania się tabelek należy odświeżyć stronę</h3></center>
+        
+        <script type="text/javascript">
+           
+            function handleEdytujRequest(xhr, status, args) {
+                if (args.wypozycz) {
+                    PF('edytorDialog').hide();
+
+                }
+            }
+        </script>
+
+    </h:body>
+</html>
+
+
